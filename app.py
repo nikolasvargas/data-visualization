@@ -12,6 +12,8 @@ colors = {
     'text': '#7FDBFF'
 }
 
+POGCHAMP_URL = 'https://bit.ly/2EwetyT'
+
 app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
     html.H1(
         children='Hello Dash',
@@ -45,7 +47,12 @@ app.layout = html.Div(style={'backgroundColor': colors['background']}, children=
                 }
             }
         }
-    )
+    ),
+
+    html.Div(style={'display': 'flex'},
+             children=[
+                 html.Img(src=POGCHAMP_URL, style={'width': 220}) for _ in range(6)
+             ])
 ])
 
 if __name__ == '__main__':
