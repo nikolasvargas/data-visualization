@@ -14,46 +14,63 @@ colors = {
 
 POGCHAMP_URL = 'https://bit.ly/2EwetyT'
 
-app.layout = html.Div(style={'backgroundColor': colors['background']}, children=[
-    html.H1(
-        children='Hello Dash',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-    ),
+app.layout = html.Div(
+    style={'backgroundColor': colors['background']},
+    children=[
+        html.H1(
+            children='Hello Dash',
+            style={
+                'textAlign': 'center',
+                'color': colors['text']
+            }
+        ),
 
-    html.Div(
-        children='Dash: A web application framework for Python.',
-        style={
-            'textAlign': 'center',
-            'color': colors['text']
-        }
-    ),
+        html.Div(
+            children='Dash: A web application framework for Python.',
+            style={
+                'textAlign': 'center',
+                'color': colors['text']
+            }
+        ),
 
-    dcc.Graph(
-        id='example-graph',
-        figure={
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-                {'x': [1, 2, 3], 'y': [2, 4, 5], 'type': 'bar', 'name': u'Montréal'},
-            ],
-            'layout': {
-                'title': 'Dash Data Visualization',
-                'plot_bgcolor': colors['background'],
-                'paper_bgcolor': colors['background'],
-                'font': {
-                    'color': colors['text']
+        dcc.Graph(
+            id='example-graph',
+            figure={
+                'data': [
+                    {
+                        'x': [1, 2, 3],
+                        'y': [4, 1, 2],
+                        'type': 'bar',
+                        'name': 'SF'
+                    },
+                    {
+                        'x': [1, 2, 3],
+                        'y': [2, 4, 5],
+                        'type': 'bar',
+                        'name': u'Montréal'
+                    },
+                ],
+                'layout': {
+                    'title': 'Dash Data Visualization',
+                    'plot_bgcolor': colors['background'],
+                    'paper_bgcolor': colors['background'],
+                    'font': {
+                        'color': colors['text']
+                    }
                 }
             }
-        }
-    ),
+        ),
 
-    html.Div(style={'display': 'flex'},
-             children=[
-                 html.Img(src=POGCHAMP_URL, style={'width': 220}) for _ in range(6)
-             ])
-])
+        html.Div(
+            style={'display': 'flex'},
+            children=[html.Img(
+                src=POGCHAMP_URL,
+                style={'width': 220})
+                for _ in range(6)
+            ]
+        )
+    ]
+)
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, host='10.20.1.64')
