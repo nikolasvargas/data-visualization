@@ -63,9 +63,8 @@ app.layout = html.Div(
 
         html.Div(
             style={'display': 'flex'},
-            children=[html.Img(
-                src=POGCHAMP_URL,
-                style={'width': 220})
+            children=[
+                html.Img(src=POGCHAMP_URL, style={'width': 220})
                 for _ in range(6)
             ]
         )
