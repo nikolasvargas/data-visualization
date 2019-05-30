@@ -14,25 +14,25 @@ URL = 'https://economia.awesomeapi.com.br/json/all'
 LOCAL_FILE = 'data/zxc.json'
 
 
-def __load() -> dict:
+async def __load() -> dict:
 
     def file_need_updated(file1: Any, file2: Any) -> bool:
         return bool(file1 != file2)
 
-    def create_local_file(data: bytes = None) -> None:
+    async def create_local_file(data: bytes = None) -> None:
         msg = 'downloading {}, to JSON'.format(URL, LOCAL_FILE)
         warnings.warn(msg)
         with open(LOCAL_FILE, 'wb') as local:
-            local.write(data if data else get_request(URL))
+            local.write(data if data is not None else get_request(URL))
 
     if not Path(LOCAL_FILE).exists():
-        create_local_file()
+        await create_local_file()
 
     with open(LOCAL_FILE) as f:
         local_json, latest_data = (json.load(f), get_request(URL))
         latest_json = json.loads(latest_data)
         if file_need_updated(local_json, latest_json):
-            create_local_file(latest_data)
+            await create_local_file(latest_data)
             return latest_json
         return local_json
 
@@ -75,7 +75,6 @@ class Parser:
     def data(self):
         return self.__data
 
-
     def __repr__(self) -> str:
         return "Parser({})".format(self.__data)
 
@@ -93,5 +92,4 @@ class Coin:
 
 
 if __name__ == "__main__":
-    request = Parser('https://economia.awesomeapi.com.br/json/all')
-
+    request = asyncio.run(__load())
