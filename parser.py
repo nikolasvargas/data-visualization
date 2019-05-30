@@ -4,22 +4,37 @@
 from collections import abc
 from pathlib import Path
 from typing import Any
+import asyncio
 import json
 import requests
 import warnings
 
+
 URL = 'https://economia.awesomeapi.com.br/json/all'
-LOCAL_JSON = 'data/zxc.json'
+LOCAL_FILE = 'data/zxc.json'
+
 
 def __load() -> dict:
-    if not Path(LOCAL_JSON).exists():
-        msg = 'downloading {}, to JSON'.format(URL, LOCAL_JSON)
-        warnings.warn(msg)
-        with open(LOCAL_JSON, 'wb') as local:
-            local.write(get_request(URL))
 
-    with open(LOCAL_JSON) as json_file:
-        return json.load(json_file)
+    def file_need_updated(file1: Any, file2: Any) -> bool:
+        return bool(file1 != file2)
+
+    def create_local_file(data: bytes = None) -> None:
+        msg = 'downloading {}, to JSON'.format(URL, LOCAL_FILE)
+        warnings.warn(msg)
+        with open(LOCAL_FILE, 'wb') as local:
+            local.write(data if data else get_request(URL))
+
+    if not Path(LOCAL_FILE).exists():
+        create_local_file()
+
+    with open(LOCAL_FILE) as f:
+        local_json, latest_data = (json.load(f), get_request(URL))
+        latest_json = json.loads(latest_data)
+        if file_need_updated(local_json, latest_json):
+            create_local_file(latest_data)
+            return latest_json
+        return local_json
 
 
 def get_request(url: str) -> bytes:
@@ -55,6 +70,11 @@ class Parser:
     def __init__(self, url: str) -> None:
         json_data = json.loads(get_request(url))
         self.__data = dict(json_data)
+
+    @property
+    def data(self):
+        return self.__data
+
 
     def __repr__(self) -> str:
         return "Parser({})".format(self.__data)
