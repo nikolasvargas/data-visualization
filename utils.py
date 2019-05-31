@@ -5,7 +5,8 @@ from typing import Any
 class FrozenData:
     """
     criado apenas para ler atributos de objetos do tipo dict ou JSON
-    usando notação de atributos
+    usando notação de atributos. Além de qualquerdict['attr']['attr'],
+    você pode fazer qualquerdict.attr.attr para obter o valor
     """
     def __init__(self, mapping: Any) -> None:
         self._data = dict(mapping)
