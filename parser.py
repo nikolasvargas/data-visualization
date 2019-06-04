@@ -8,11 +8,22 @@ import asyncio
 import json
 import requests
 import warnings
+import time as _t
 
 
 URL = 'https://economia.awesomeapi.com.br/json/all'
 LOCAL_FILE = 'data/zxc.json'
 
+
+def watch(func):
+    def wrapped(*args, **kwargs):
+        start = _t.time()
+        result = func(*args, **kwargs)
+        end = _t.time()
+        fmt = "function: {}\nexec elapsed time: {}\n"
+        print(fmt.format(func.__name__, (end - start)))
+        return result
+    return wrapped
 
 async def _load() -> dict:
 
