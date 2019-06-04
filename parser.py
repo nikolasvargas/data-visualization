@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable, Coroutine
 from utils import FrozenData
 import asyncio
 import json
@@ -15,26 +15,26 @@ URL = 'https://economia.awesomeapi.com.br/json/all'
 LOCAL_FILE = 'data/zxc.json'
 
 
-def watch(func):
-    def wrapped(*args, **kwargs):
+def watch(fn: Callable) -> Callable:
+    def wrapped(*args: Any, **kwargs: dict) -> Callable:
         start = _t.time()
-        result = func(*args, **kwargs)
+        result = fn(*args, **kwargs)
         end = _t.time()
         fmt = "function: {}\nexec elapsed time: {}\n"
-        print(fmt.format(func.__name__, (end - start)))
+        print(fmt.format(fn.__name__, (end - start)))
         return result
     return wrapped
 
-async def _load() -> dict:
+async def _load() -> Coroutine:
 
     def file_need_updated(file1: Any, file2: Any) -> bool:
         return bool(file1 != file2)
 
-    async def create_local_file(data: bytes = None) -> None:
+    async def create_local_file(data: bytes = None) -> Coroutine:
         msg = 'downloading {}, to JSON'.format(URL, LOCAL_FILE)
         warnings.warn(msg)
         with open(LOCAL_FILE, 'wb') as local:
-            local.write(data if data is not None else _get_request(URL))
+            local.write(data if data else _get_request(URL))
 
     if not Path(LOCAL_FILE).exists():
         await create_local_file()
@@ -60,7 +60,7 @@ class Parser:
         self.values = FrozenData(self._data)
 
     @property
-    def data(self):
+    def data(self) -> str:
         return self._data
 
     def __str__(self) -> str:
