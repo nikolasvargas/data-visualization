@@ -76,7 +76,7 @@ class Coin:
         self.code = code
 
     def __repr__(self) -> str:
-        return "Coin({:s}, {:s})".format(self.name, self.code)
+        return "<Coin({:s}, {:s})>".format(self.name, self.code)
 
 
 if __name__ == "__main__":
