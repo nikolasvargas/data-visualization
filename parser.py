@@ -26,6 +26,7 @@ def watch(fn: Callable) -> Callable:
     return wrapped
 
 
+@watch
 async def _load() -> Coroutine:
 
     def file_need_updated(file1: Any, file2: Any) -> bool:
