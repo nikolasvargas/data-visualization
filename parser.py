@@ -25,11 +25,13 @@ def watch(fn: Callable) -> Callable:
         return result
     return wrapped
 
+
 async def _load() -> Coroutine:
 
     def file_need_updated(file1: Any, file2: Any) -> bool:
         return bool(file1 != file2)
 
+    @watch
     async def create_local_file(data: bytes = None) -> Coroutine:
         msg = 'downloading {}, to JSON'.format(URL, LOCAL_FILE)
         warnings.warn(msg)
@@ -47,7 +49,7 @@ async def _load() -> Coroutine:
             return latest_json
         return local_json
 
-
+@watch
 def _get_request(url: str) -> bytes:
     request = requests.get(url)
     return request.content
