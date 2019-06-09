@@ -1,5 +1,7 @@
 from collections import abc
-from typing import Any
+from typing import Any, Callable
+import time as _t
+import functools
 
 
 class FrozenData:
@@ -25,3 +27,15 @@ class FrozenData:
             return [cls.build(item) for item in obj]
         else:
             return obj
+
+
+def watch(fn: Callable) -> Callable:
+    @functools.wraps(fn)
+    def wrapped(*args: Any, **kwargs: dict) -> Callable:
+        start = _t.time()
+        result = fn(*args, **kwargs)
+        end = _t.time()
+        fmt = "function: {}\nexec elapsed time: {}\n"
+        print(fmt.format(fn.__name__, (end - start)))
+        return result
+    return wrapped

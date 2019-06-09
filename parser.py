@@ -3,27 +3,15 @@
 
 from pathlib import Path
 from typing import Any, Callable, Coroutine
-from utils import FrozenData
+from utils import FrozenData, watch
 import asyncio
 import json
 import requests
 import warnings
-import time as _t
 
 
 URL = 'https://economia.awesomeapi.com.br/json/all'
 LOCAL_FILE = 'data/zxc.json'
-
-
-def watch(fn: Callable) -> Callable:
-    def wrapped(*args: Any, **kwargs: dict) -> Callable:
-        start = _t.time()
-        result = fn(*args, **kwargs)
-        end = _t.time()
-        fmt = "function: {}\nexec elapsed time: {}\n"
-        print(fmt.format(fn.__name__, (end - start)))
-        return result
-    return wrapped
 
 
 @watch
