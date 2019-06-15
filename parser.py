@@ -51,7 +51,7 @@ class Parser:
         self.values = FrozenData(self._data)
 
     @property
-    def data(self) -> str:
+    def data(self) -> dict:
         return self._data
 
     def __str__(self) -> str:
