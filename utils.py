@@ -23,10 +23,9 @@ class FrozenData:
     def build(cls, obj: Any) -> Any:
         if isinstance(obj, abc.Mapping):
             return cls(obj)
-        elif isinstance(obj, abc.MutableSequence):
+        if isinstance(obj, abc.MutableSequence):
             return [cls.build(item) for item in obj]
-        else:
-            return obj
+        return obj
 
 
 def watch(fn: Callable) -> Callable:
